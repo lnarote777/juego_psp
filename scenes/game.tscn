@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://do1me4std1qg6"]
+
+[ext_resource type="PackedScene" uid="uid://cnpk2iwdb6blw" path="res://scenes/wizard.tscn" id="1_nbmc3"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Wizard" parent="." instance=ExtResource("1_nbmc3")]
+position = Vector2(148, 165)
+
+[node name="Camera2D" type="Camera2D" parent="Wizard"]
+position = Vector2(7, 18)

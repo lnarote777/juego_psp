@@ -1,16 +1,22 @@
+using System;
 using Godot;
 
 public partial class Wizard : CharacterBody2D
 {
 	[Export] public float Speed = 100f;
-	private float _maxHealth = 10f;
+	[Export] public float JumpVelocity = 700.0f;
+	[Export] public float DashSpeed = 500f;
+    [Export] public float DashDuration = 0.4f;
+	[Export] public float MaxHealth = 10f;
+	[Export] public bool attack = false;
+
 	private float _currentHealth;
-	public const float JumpVelocity = -500.0f;
 	private float _acceleration = .25f;
-	private float _friction = .1f;
-	private int _gravity = 4000;
-	private int _jumpHeight = 300;
-	private int _dashSpeed = 1000;
+	private int _gravity = 3000;
+	private bool _isDashing = false;
+    private float _dashTimer = 0f;
+    private int _lastDirection = 1;
+	
 
 
 	AnimatedSprite2D _animatedSprite;
@@ -22,44 +28,106 @@ public partial class Wizard : CharacterBody2D
         // Inicializa el AnimatedSprite2D obteniéndolo del nodo
         _animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		_collision = GetNode<CollisionShape2D>("CollisionShape2D");
-		_currentHealth = _maxHealth;
+		var _currentHealth = MaxHealth;
+    }
+
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionJustPressed("Attack"))  // Evita interrumpir la animación si ya está en curso
+        {
+            Attack(); // Llama a la función de ataque
+        }
     }
 
     public override void _PhysicsProcess(double delta)
 	{
-		Vector2 velocity = new Vector2();
+	
+		Vector2 velocity = Velocity;
 		int direction = 0;
 
-		if (Input.IsActionPressed("move_left")){
-			direction -= 1;
-		}
-		if (Input.IsActionPressed("move_right")){
-			direction += 1;
-		}
-		if (direction != 0){
-			velocity.X = Mathf.Lerp(velocity.X, direction * Speed, _acceleration);
-		}else{
-			velocity.X = Mathf.Lerp(velocity.X, 0, _friction);
-		}
-		if (Input.IsActionJustPressed("jump")){
-
-			if (IsOnFloor()){
-				_animatedSprite.Play("jump");
-				velocity.Y -= _jumpHeight;
-			}
-		}
-
-		if (Input.IsActionJustPressed("dash")){
-			if (Input.IsActionPressed("move_left")){
-				velocity.X = _dashSpeed;
-			}
-			if (Input.IsActionPressed("move_right")){
-				velocity.X = _dashSpeed;
-			}
+		if (!_isDashing){
+			velocity.Y += (float)(_gravity * delta);
 		}
 		
-		velocity.Y += (float)(_gravity * delta);
- 		
-		MoveAndSlide();
+		if (_isDashing){
+            _dashTimer -= (float)delta;
+            if (_dashTimer <= 0)
+            {
+                _isDashing = false;
+                _animatedSprite.Play("idle"); // Volver a la animación idle
+            }
+            else
+            {
+                velocity.X = _lastDirection * DashSpeed; // Mantener la velocidad del dash
+                Velocity = velocity;
+                MoveAndSlide();
+                return; // Salir para que no interfieran otras lógicas
+            }
+        }
+
+		if (!attack){
+			if (Input.IsActionPressed("move_left")){
+
+				_animatedSprite.Play("walk");
+				direction -= 1;
+				_lastDirection = -1;
+				_animatedSprite.FlipH = true;
+
+			}else if (Input.IsActionPressed("move_right")){
+
+				_animatedSprite.Play("walk");
+				direction += 1;
+				_lastDirection = 1;
+				_animatedSprite.FlipH = false;
+
+			}else{
+
+				_animatedSprite.Play("idle");
+
+			}
+
+			if (direction != 0){
+
+				velocity.X = (direction * Speed);
+
+			}else{
+				
+				velocity.X = Mathf.MoveToward(velocity.X, 0, Speed);
+			}
+
+			if (Input.IsActionJustPressed("Jump") && IsOnFloor()){
+						
+				velocity.Y = -JumpVelocity;
+				_animatedSprite.Play("jump");
+					
+			}
+
+			if (Input.IsActionJustPressed("dash") && !_isDashing){
+
+				_isDashing = true;
+				_dashTimer = DashDuration;
+				velocity.X = _lastDirection * DashSpeed;
+				_animatedSprite.Play("dash");
+
+			}
+		}
+
+		
+
+        Velocity = velocity;
+        MoveAndSlide();
+    }
+
+    private async void Attack(){
+		attack = true;
+        _animatedSprite.Play("attack");
+        await ToSignal(_animatedSprite, "animation_finished");
+		attack = false;
 	}
+
+	public void _on_sword_hit_area_entered(Area2D area){
+
+
+	}
+	
 }

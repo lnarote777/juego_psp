@@ -3,9 +3,17 @@
 [ext_resource type="Script" path="res://scripts/Killzone.cs" id="1_y68pl"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_fnpvh"]
+normal = Vector2(-0.0126572, -0.99992)
 
 [node name="killzone" type="Area2D"]
+collision_layer = 2
 script = ExtResource("1_y68pl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("WorldBoundaryShape2D_fnpvh")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=29 format=3 uid="uid://cnpk2iwdb6blw"]
+[gd_scene load_steps=36 format=3 uid="uid://cnpk2iwdb6blw"]
 
 [ext_resource type="Script" path="res://scripts/Wizard.cs" id="1_8514f"]
 [ext_resource type="Texture2D" uid="uid://y63835vodl4h" path="res://assets/AnimationSheet_Character.png" id="2_o17ys"]
+[ext_resource type="Texture2D" uid="uid://qedpdq01uva3" path="res://assets/light.png" id="2_v757p"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_47m2d"]
 atlas = ExtResource("2_o17ys")
@@ -50,6 +51,30 @@ region = Rect2(64, 96, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_r6cca"]
 atlas = ExtResource("2_o17ys")
 region = Rect2(96, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmk7k"]
+atlas = ExtResource("2_o17ys")
+region = Rect2(0, 224, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3iwb"]
+atlas = ExtResource("2_o17ys")
+region = Rect2(64, 224, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rfwcw"]
+atlas = ExtResource("2_o17ys")
+region = Rect2(96, 224, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dw77"]
+atlas = ExtResource("2_o17ys")
+region = Rect2(128, 224, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pdyo5"]
+atlas = ExtResource("2_o17ys")
+region = Rect2(160, 224, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6ai5"]
+atlas = ExtResource("2_o17ys")
+region = Rect2(192, 224, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uo12v"]
 atlas = ExtResource("2_o17ys")
@@ -145,6 +170,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_vmk7k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p3iwb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rfwcw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5dw77")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pdyo5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6ai5")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_uo12v")
 }, {
 "duration": 1.0,
@@ -196,7 +244,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sth5h"]
-size = Vector2(17, 60)
+size = Vector2(20, 60)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_au7du"]
 radius = 13.0
@@ -205,26 +253,35 @@ height = 50.0
 [node name="Wizard" type="CharacterBody2D"]
 script = ExtResource("1_8514f")
 
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(-1, 1)
+scale = Vector2(11.3828, 10.9922)
+color = Color(0.947199, 0.947199, 0.947199, 1)
+energy = 0.75
+texture = ExtResource("2_v757p")
+texture_scale = 0.01
+height = 41.0
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 light_mask = 5
 position = Vector2(1, -6.46235e-27)
 scale = Vector2(1.70068, 1.86841)
 sprite_frames = SubResource("SpriteFrames_us414")
-animation = &"attack"
+animation = &"dead"
 autoplay = "idle"
-frame = 7
-frame_progress = 1.0
 
-[node name="SwordHit" type="Area2D" parent="AnimatedSprite2D"]
-position = Vector2(-0.588, 3.45874e-27)
-scale = Vector2(0.588, 0.535214)
+[node name="SwordHit" type="Area2D" parent="."]
+position = Vector2(20, 3)
+scale = Vector2(1, 0.999999)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/SwordHit"]
-position = Vector2(22.5, 4)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHit"]
+show_behind_parent = true
+light_mask = 2
+position = Vector2(3.8147e-06, 0)
 shape = SubResource("RectangleShape2D_sth5h")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 6)
+light_mask = 3
+visibility_layer = 3
+position = Vector2(-1, 5)
 shape = SubResource("CapsuleShape2D_au7du")
-
-[connection signal="area_entered" from="AnimatedSprite2D/SwordHit" to="." method="_on_sword_hit_area_entered"]

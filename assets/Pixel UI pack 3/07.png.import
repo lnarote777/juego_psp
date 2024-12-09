@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bixdvml522hcd"
-path="res://.godot/imported/heart.png-9a2fa56e49d8a002fed7c28ce07513e0.ctex"
+uid="uid://cn5sc0xyg5b1w"
+path="res://.godot/imported/07.png-af39f451a042ba61ceef349ec2291601.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/heart.png"
-dest_files=["res://.godot/imported/heart.png-9a2fa56e49d8a002fed7c28ce07513e0.ctex"]
+source_file="res://assets/Pixel UI pack 3/07.png"
+dest_files=["res://.godot/imported/07.png-af39f451a042ba61ceef349ec2291601.ctex"]
 
 [params]
 

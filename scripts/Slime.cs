@@ -40,8 +40,8 @@ public partial class Slime : CharacterBody2D{
         {
             _animatedSprite.FlipH = true; // Mirando a la derecha
         }
-        Velocity = velocity;
 
+        Velocity = velocity;
 
         MoveAndSlide();
     }

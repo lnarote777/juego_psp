@@ -472,6 +472,7 @@ physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_fs874")
 
 [node name="Game" type="Node2D"]
+metadata/_edit_group_ = true
 
 [node name="TileMap2" type="TileMapLayer" parent="."]
 position = Vector2(299, 15)
@@ -490,7 +491,10 @@ limit_left = 300
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("4_wx7o6")]
 
+[node name="Slime" parent="." instance=ExtResource("6_srhdq")]
+position = Vector2(536, 489)
+collision_layer = 3
+collision_mask = 3
+
 [node name="killzone" parent="." instance=ExtResource("5_0j1sf")]
 position = Vector2(1855, 1496)
-
-[node name="Slime" parent="." instance=ExtResource("6_srhdq")]

@@ -4,7 +4,7 @@ using Godot;
 public partial class Wizard : CharacterBody2D
 {
 	[Export] public float Speed = 200f;
-	[Export] public float JumpVelocity = 700.0f;
+	[Export] public float JumpVelocity = 800.0f;
 	[Export] public float DashSpeed = 500f;
     [Export] public float DashDuration = 0.4f;
 	[Export] public float MaxHealth = 10f;
@@ -103,7 +103,7 @@ public partial class Wizard : CharacterBody2D
 				velocity.X = Mathf.MoveToward(velocity.X, 0, Speed);
 			}
 
-			if (Input.IsActionJustPressed("Jump")){
+			if (Input.IsActionJustPressed("Jump") && IsOnFloor()){
 						
 				velocity.Y = -JumpVelocity;
 				_animatedSprite.Play("jump");

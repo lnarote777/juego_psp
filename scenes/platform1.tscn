@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dv2d8x5f0vbm2"]
+
+[ext_resource type="Texture2D" uid="uid://bpelg428117wq" path="res://assets/tilemaps/forest/Terrain_and_Props.png" id="1_7u5bu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pl4bn"]
+size = Vector2(78, 11)
+
+[node name="platform1" type="AnimatableBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_7u5bu")
+region_enabled = true
+region_rect = Rect2(80.7899, 159.6, 78.4658, 13.6031)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1.5)
+shape = SubResource("RectangleShape2D_pl4bn")
+one_way_collision = true

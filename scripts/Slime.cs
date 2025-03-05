@@ -3,10 +3,16 @@ using System;
 
 public partial class Slime : CharacterBody2D{
 
+    [Export] public float MaxHealth = 3f;
     [Export] float move = 70;
+
     private float _gravity = 98;
-    public int dead = 1;
     public bool hit = false;
+    private float _currentHealth;
+    private bool _playerInattackRange = false;
+	private bool _playerAttackCooldown = true;
+	private Timer _attackCooldown ;
+
 
     AnimatedSprite2D _animatedSprite;
 
@@ -14,6 +20,14 @@ public partial class Slime : CharacterBody2D{
     {
         Velocity = new Vector2(-move, 0);
         _animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        _currentHealth = MaxHealth;
+        AddToGroup("enemy");
+
+        _attackCooldown = new Timer();
+		_attackCooldown.WaitTime = 1.0f;  
+		_attackCooldown.OneShot = true;
+		AddChild(_attackCooldown);       
+		_attackCooldown.Timeout += _on_attack_cooldown_timeout;
 
     }
 
@@ -47,31 +61,43 @@ public partial class Slime : CharacterBody2D{
     }
 
     private void Dead(){
-        if (hit){
-            if (dead > 0){
-                SetPhysicsProcess(false);
-                _animatedSprite.AnimationFinished += OnAnimationFinished; // Conectamos el evento
-                _animatedSprite.Play("dead"); // Asegúrate de usar la animación correcta
-            }
-        }
+        
+        SetPhysicsProcess(false);
+        _animatedSprite.Play("dead");
+        _animatedSprite.AnimationFinished += OnAnimationFinished;
+        
     }
 
     private void OnAnimationFinished()
     {
-        // Lógica después de que termine la animación
         GD.Print("Animación finalizada");
-        QueueFree(); // Por ejemplo, elimina el objeto después de la animación
+        QueueFree();
     }
 
-    public void _on_area_2d_body_entered(Node2D body){
-        if (body is Wizard wizard)
-        {
-            GD.Print("Wizard detectado. Llamando a Dead...");
-            wizard.Dead();
-        }
-        else
-        {
-            GD.Print("El nodo detectado no es un Wizard. Es: " + body.Name);
+    public void TakeDamge(float damage){
+
+        _currentHealth -= damage;
+        GD.Print("Slime health: " + _currentHealth);
+        if (_currentHealth <= 0){
+            Dead();
         }
     }
+
+    public void _on_enemy_hitbox_body_entered(Node2D body){
+        if (body.IsInGroup("player")){
+            _playerInattackRange = true;
+        }
+        
+    }
+
+    public void _on_enemy_hitbox_body_exited(Node2D body){
+        if (body.IsInGroup("player")){
+            _playerInattackRange = false;
+        }
+    }
+
+    public void _on_attack_cooldown_timeout(){
+
+    }
+
 }

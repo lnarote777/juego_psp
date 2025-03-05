@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography.X509Certificates;
 using Godot;
 
 public partial class Wizard : CharacterBody2D
@@ -16,6 +17,10 @@ public partial class Wizard : CharacterBody2D
 	private bool _isDashing = false;
     private float _dashTimer = 0f;
     private int _lastDirection = 1;
+	private Vector2 _initialPosition;
+	private bool _enemyInattackRange = false;
+	private bool _enemyAttackCooldown = true;
+	private Timer _attackCooldown ;
 	
 
 
@@ -31,6 +36,14 @@ public partial class Wizard : CharacterBody2D
 		_collision = GetNode<CollisionShape2D>("CollisionShape2D");
 		_area2D = GetNode<Area2D>("SwordHit");
 		_currentHealth = MaxHealth;
+		_initialPosition = Position;
+		AddToGroup("player");
+
+		_attackCooldown = new Timer();
+		_attackCooldown.WaitTime = 1.0f;  
+		_attackCooldown.OneShot = true;
+		AddChild(_attackCooldown);       
+		_attackCooldown.Timeout += _on_attack_cooldown_timeout;
     }
 
     public override void _Process(double delta)
@@ -39,6 +52,7 @@ public partial class Wizard : CharacterBody2D
         {
             Attack(); // Llama a la función de ataque
         }
+		TakeDamage();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -133,15 +147,57 @@ public partial class Wizard : CharacterBody2D
 
 	public void _on_sword_hit_body_entered(Node2D body){
 		if (body.IsInGroup("ene")){
-			GetTree().ChangeSceneToFile("res://scenes/gameover.tscn");
+			GD.Print("Slime golpeado");
+			body.Call("TakeDamage", 1);
 		}
 
 	}
 
 	
-	public void Dead(){
+	public async void Dead(){
 		GD.Print("Reproduciendo animación 'dead'.");
 		_animatedSprite.Play("dead");
+		SetPhysicsProcess(false);
+		await ToSignal(_animatedSprite, "animation_finished");
+		CallDeferred(nameof(ResetPosition));
+	}
+
+	private void ResetPosition(){
+		Position = _initialPosition;
+		SetPhysicsProcess(true);
+		_currentHealth = MaxHealth;
+		_animatedSprite.Play("idle");
+	}
+
+	public void _on_wizar_hitbox_body_entered(Node2D body){
+		if (body.IsInGroup("enemy")){
+			_enemyInattackRange = true;
+		}
 	}
 	
+	public void _on_wizar_hitbox_body_exited(Node2D body){
+		if (body.IsInGroup("enemy")){
+			_enemyInattackRange = false;
+		}
+	}
+
+	public void TakeDamage(){
+		if (_enemyInattackRange && _enemyAttackCooldown == true){
+			_currentHealth -= 1;
+			_enemyAttackCooldown = false;
+			_attackCooldown.Start();
+			GD.Print("Wizard health: " + _currentHealth);
+		}
+
+		if (_currentHealth <= 0){
+				Dead();
+		}
+
+	}
+
+
+	public void _on_attack_cooldown_timeout(){
+		_enemyAttackCooldown = true;
+
+	}
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cnpk2iwdb6blw"]
+[gd_scene load_steps=37 format=3 uid="uid://cnpk2iwdb6blw"]
 
 [ext_resource type="Script" path="res://scripts/Wizard.cs" id="1_8514f"]
 [ext_resource type="Texture2D" uid="uid://y63835vodl4h" path="res://assets/AnimationSheet_Character.png" id="2_o17ys"]
@@ -250,6 +250,10 @@ size = Vector2(15, 41)
 radius = 11.0
 height = 52.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_43m2x"]
+radius = 23.0
+height = 50.0
+
 [node name="Wizard" type="CharacterBody2D"]
 script = ExtResource("1_8514f")
 
@@ -269,8 +273,6 @@ scale = Vector2(1.6875, 1.8615)
 sprite_frames = SubResource("SpriteFrames_us414")
 animation = &"attack"
 autoplay = "idle"
-frame = 7
-frame_progress = 1.0
 
 [node name="SwordHit" type="Area2D" parent="."]
 position = Vector2(20, 3)
@@ -279,11 +281,26 @@ scale = Vector2(1, 0.999999)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHit"]
 show_behind_parent = true
 light_mask = 2
-position = Vector2(40, 14)
+position = Vector2(12, 14)
 shape = SubResource("RectangleShape2D_sth5h")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 3
 visibility_layer = 3
-position = Vector2(10, 16)
+position = Vector2(9, 17)
 shape = SubResource("CapsuleShape2D_au7du")
+
+[node name="wizar_hitbox" type="Area2D" parent="."]
+position = Vector2(27, 69)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="wizar_hitbox"]
+position = Vector2(-17, -46)
+shape = SubResource("CapsuleShape2D_43m2x")
+
+[node name="attackCooldown" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="body_entered" from="SwordHit" to="." method="_on_sword_hit_body_entered"]
+[connection signal="body_entered" from="wizar_hitbox" to="." method="_on_wizar_hitbox_body_entered"]
+[connection signal="body_exited" from="wizar_hitbox" to="." method="_on_wizar_hitbox_body_exited"]
+[connection signal="timeout" from="attackCooldown" to="." method="_on_attack_cooldown_timeout"]

@@ -196,10 +196,10 @@ radius = 12.0128
 height = 46.0234
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yafie"]
-radius = 16.0312
-height = 56.0151
+radius = 17.092
+height = 56.2662
 
-[node name="Slime" type="CharacterBody2D"]
+[node name="Slime" type="CharacterBody2D" groups=["enemy"]]
 position = Vector2(-20, -13)
 script = ExtResource("1_jcfu8")
 
@@ -228,6 +228,9 @@ shape = SubResource("CapsuleShape2D_yafie")
 
 [node name="attackCooldown" type="Timer" parent="."]
 
+[node name="damageCooldown" type="Timer" parent="."]
+
 [connection signal="body_entered" from="enemy_hitbox" to="." method="_on_enemy_hitbox_body_entered"]
 [connection signal="body_exited" from="enemy_hitbox" to="." method="_on_enemy_hitbox_body_exited"]
 [connection signal="timeout" from="attackCooldown" to="." method="_on_attack_cooldown_timeout"]
+[connection signal="timeout" from="damageCooldown" to="." method="_on_damage_cooldown_timeout"]

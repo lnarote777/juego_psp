@@ -21,8 +21,7 @@ public partial class Wizard : CharacterBody2D
 	private bool _enemyInattackRange = false;
 	private bool _enemyAttackCooldown = true;
 	private Timer _attackCooldown ;
-	
-
+	private Timer _attackTimer ;
 
 	AnimatedSprite2D _animatedSprite;
 	CollisionShape2D _collision;
@@ -40,10 +39,16 @@ public partial class Wizard : CharacterBody2D
 		AddToGroup("player");
 
 		_attackCooldown = new Timer();
-		_attackCooldown.WaitTime = 1.0f;  
+		_attackCooldown.WaitTime = 0.5f;  
 		_attackCooldown.OneShot = true;
 		AddChild(_attackCooldown);       
 		_attackCooldown.Timeout += _on_attack_cooldown_timeout;
+
+		_attackTimer = new Timer();
+		_attackTimer.WaitTime = 0.5f;  
+		_attackTimer.OneShot = true;
+		AddChild(_attackTimer);       
+		_attackTimer.Timeout += _on_attack_timer_timeout;
     }
 
     public override void _Process(double delta)
@@ -140,18 +145,12 @@ public partial class Wizard : CharacterBody2D
 
     private async void Attack(){
 		attack = true;
+		Global.playerCurrentAttack = true;
         _animatedSprite.Play("attack");
         await ToSignal(_animatedSprite, "animation_finished");
 		attack = false;
 	}
 
-	public void _on_sword_hit_body_entered(Node2D body){
-		if (body.IsInGroup("ene")){
-			GD.Print("Slime golpeado");
-			body.Call("TakeDamage", 1);
-		}
-
-	}
 
 	
 	public async void Dead(){
@@ -183,21 +182,26 @@ public partial class Wizard : CharacterBody2D
 
 	public void TakeDamage(){
 		if (_enemyInattackRange && _enemyAttackCooldown == true){
-			_currentHealth -= 1;
+			_currentHealth -= 1f;
 			_enemyAttackCooldown = false;
 			_attackCooldown.Start();
 			GD.Print("Wizard health: " + _currentHealth);
-		}
 
-		if (_currentHealth <= 0){
+			if (_currentHealth <= 0){
 				Dead();
+			}
 		}
 
 	}
 
-
 	public void _on_attack_cooldown_timeout(){
 		_enemyAttackCooldown = true;
 
+	}
+
+	public void _on_attack_timer_timeout(){
+		_attackTimer.Stop();
+		Global.playerCurrentAttack = false;
+		attack = false;
 	}
 }

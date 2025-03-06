@@ -1605,6 +1605,26 @@ libraries = {
 autoplay = "move"
 
 [node name="killzone" parent="." instance=ExtResource("2_s5gh3")]
-position = Vector2(1063, 1466)
+position = Vector2(993, 1287)
+
+[node name="killzone2" parent="." instance=ExtResource("2_s5gh3")]
+position = Vector2(2706, 1351)
+
+[node name="killzone3" parent="." instance=ExtResource("2_s5gh3")]
+position = Vector2(2922, 1351)
+
+[node name="killzone4" parent="." instance=ExtResource("2_s5gh3")]
+position = Vector2(3137, 1351)
+
+[node name="killzone5" parent="." instance=ExtResource("2_s5gh3")]
+position = Vector2(3353, 1351)
+
+[node name="killzone6" parent="." instance=ExtResource("2_s5gh3")]
+position = Vector2(3566, 1350)
 
 [connection signal="body_entered" from="killzone" to="killzone" method="_on_body_entered"]
+[connection signal="body_entered" from="killzone2" to="killzone2" method="_on_body_entered"]
+[connection signal="body_entered" from="killzone3" to="killzone3" method="_on_body_entered"]
+[connection signal="body_entered" from="killzone4" to="killzone4" method="_on_body_entered"]
+[connection signal="body_entered" from="killzone5" to="killzone5" method="_on_body_entered"]
+[connection signal="body_entered" from="killzone6" to="killzone6" method="_on_body_entered"]

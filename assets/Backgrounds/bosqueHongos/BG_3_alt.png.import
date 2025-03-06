@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvb35q6w30lbw"
-path="res://.godot/imported/background_2.png-c4782a4660e5196bccdc29d1d110f1bb.ctex"
+uid="uid://xettrrbg1hv5"
+path="res://.godot/imported/BG_3_alt.png-b47d228ee13db4a4a534705705a4fde0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/stringstar fields/background_2.png"
-dest_files=["res://.godot/imported/background_2.png-c4782a4660e5196bccdc29d1d110f1bb.ctex"]
+source_file="res://assets/Backgrounds/bosqueHongos/BG_3_alt.png"
+dest_files=["res://.godot/imported/BG_3_alt.png-b47d228ee13db4a4a534705705a4fde0.ctex"]
 
 [params]
 

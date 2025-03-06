@@ -1,9 +1,12 @@
 using Godot;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public partial class Menu : Control
 {
-	public void _on_play_pressed(){
+
+
+    public void _on_play_pressed(){
 		GetTree().ChangeSceneToFile("res://scenes/game.tscn");
 	}
 

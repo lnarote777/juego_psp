@@ -1,9 +1,10 @@
-[gd_scene load_steps=38 format=3 uid="uid://cnpk2iwdb6blw"]
+[gd_scene load_steps=39 format=3 uid="uid://cnpk2iwdb6blw"]
 
 [ext_resource type="Script" path="res://scripts/Wizard.cs" id="1_8514f"]
 [ext_resource type="Texture2D" uid="uid://y63835vodl4h" path="res://assets/AnimationSheet_Character.png" id="2_o17ys"]
 [ext_resource type="Texture2D" uid="uid://qedpdq01uva3" path="res://assets/light.png" id="2_v757p"]
 [ext_resource type="PackedScene" uid="uid://dlyekrhkcppiw" path="res://scenes/background.tscn" id="4_dt84d"]
+[ext_resource type="PackedScene" uid="uid://c8afjr3fed7qw" path="res://scenes/pause.tscn" id="5_vms8f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_47m2d"]
 atlas = ExtResource("2_o17ys")
@@ -329,6 +330,17 @@ offset_right = 214.0
 offset_bottom = 30.0
 theme_override_font_sizes/font_size = 20
 text = "Coins: 0"
+
+[node name="Pause" parent="." instance=ExtResource("5_vms8f")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -456.0
+offset_top = -241.0
+offset_right = 634.0
+offset_bottom = 283.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [connection signal="body_entered" from="wizar_hitbox" to="." method="_on_wizar_hitbox_body_entered"]
 [connection signal="body_exited" from="wizar_hitbox" to="." method="_on_wizar_hitbox_body_exited"]

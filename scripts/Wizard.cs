@@ -22,6 +22,7 @@ public partial class Wizard : CharacterBody2D
 	private bool _enemyAttackCooldown = true;
 	private Timer _attackCooldown ;
 	private Timer _attackTimer ;
+	private int _deaths = 0;
 
 	AnimatedSprite2D _animatedSprite;
 	CollisionShape2D _collision;
@@ -53,11 +54,15 @@ public partial class Wizard : CharacterBody2D
 
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("Attack"))  // Evita interrumpir la animación si ya está en curso
+        if (Input.IsActionJustPressed("Attack"))
         {
-            Attack(); // Llama a la función de ataque
+            Attack();
         }
 		TakeDamage();
+
+		if (_deaths == 3){
+			GetTree().ChangeSceneToFile("scenes/gameover.tscn");
+		}
     }
 
     public override void _PhysicsProcess(double delta)
@@ -76,14 +81,14 @@ public partial class Wizard : CharacterBody2D
             if (_dashTimer <= 0)
             {
                 _isDashing = false;
-                _animatedSprite.Play("idle"); // Volver a la animación idle
+                _animatedSprite.Play("idle"); 
             }
             else
             {
-                velocity.X = _lastDirection * DashSpeed; // Mantener la velocidad del dash
+                velocity.X = _lastDirection * DashSpeed; 
                 Velocity = velocity;
                 MoveAndSlide();
-                return; // Salir para que no interfieran otras lógicas
+                return; 
             }
         }
 
@@ -154,6 +159,7 @@ public partial class Wizard : CharacterBody2D
 
 	
 	public async void Dead(){
+		_deaths += 1;
 		GD.Print("Reproduciendo animación 'dead'.");
 		_animatedSprite.Play("dead");
 		SetPhysicsProcess(false);

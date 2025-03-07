@@ -18,7 +18,6 @@ public partial class Pause : Control
         if (Input.IsActionJustPressed("pausar"))
         {
             GD.Print("Pausar");
-			GetTree().Paused = !GetTree().Paused;
 			if (pause != null)
 			{
 				pause.Visible = !pause.Visible;

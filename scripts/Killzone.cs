@@ -7,7 +7,7 @@ public partial class Killzone : Area2D
 
     public override void _Ready()
     {
-         _timer = new Timer();
+        _timer = GetNode<Timer>("Timer");
 
     }
     
@@ -16,12 +16,17 @@ public partial class Killzone : Area2D
         {
             GD.Print("You died");
             body.Call("Dead"); // Llama al método Dead del personaje
-            _timer.Start(); // Inicia el Timer
+            if (_timer.IsInsideTree())
+            {
+                _timer.Start();
+            }else
+            {
+                GD.Print("Timer is not in the scene tree!");
+            }// Inicia el Timer
         }
     }
 
     void _on_timer_timeout()
     {
-        GetTree().ReloadCurrentScene();
     }
 }

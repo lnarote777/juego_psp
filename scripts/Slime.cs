@@ -71,7 +71,7 @@ public partial class Slime : CharacterBody2D{
 
     private void Dead(){
         QueueFree();
-        GameManager.Instance.AddPoint();
+        GameManager.AddPoint();
     }
 
     public void TakeDamage(){

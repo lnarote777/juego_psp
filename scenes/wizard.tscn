@@ -1,8 +1,9 @@
-[gd_scene load_steps=37 format=3 uid="uid://cnpk2iwdb6blw"]
+[gd_scene load_steps=38 format=3 uid="uid://cnpk2iwdb6blw"]
 
 [ext_resource type="Script" path="res://scripts/Wizard.cs" id="1_8514f"]
 [ext_resource type="Texture2D" uid="uid://y63835vodl4h" path="res://assets/AnimationSheet_Character.png" id="2_o17ys"]
 [ext_resource type="Texture2D" uid="uid://qedpdq01uva3" path="res://assets/light.png" id="2_v757p"]
+[ext_resource type="PackedScene" uid="uid://dlyekrhkcppiw" path="res://scenes/background.tscn" id="4_dt84d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_47m2d"]
 atlas = ExtResource("2_o17ys")
@@ -255,6 +256,8 @@ radius = 15.0
 height = 50.0
 
 [node name="Wizard" type="CharacterBody2D" groups=["player"]]
+collision_layer = 15
+collision_mask = 15
 script = ExtResource("1_8514f")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
@@ -293,7 +296,7 @@ position = Vector2(11, 17)
 shape = SubResource("CapsuleShape2D_au7du")
 
 [node name="wizar_hitbox" type="Area2D" parent="."]
-position = Vector2(27, 69)
+position = Vector2(28, 64)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="wizar_hitbox"]
 position = Vector2(-17, -46)
@@ -303,6 +306,29 @@ shape = SubResource("CapsuleShape2D_43m2x")
 wait_time = 0.5
 
 [node name="attackTimer" type="Timer" parent="." groups=["player"]]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(14, 18)
+zoom = Vector2(2, 2)
+limit_left = 250
+
+[node name="ParallaxBackground" parent="Camera2D" instance=ExtResource("4_dt84d")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Score" type="Label" parent="HUD"]
+offset_right = 76.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 20
+text = "Score: 0"
+
+[node name="Coins" type="Label" parent="HUD"]
+offset_left = 138.0
+offset_top = 2.0
+offset_right = 214.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 20
+text = "Coins: 0"
 
 [connection signal="body_entered" from="wizar_hitbox" to="." method="_on_wizar_hitbox_body_entered"]
 [connection signal="body_exited" from="wizar_hitbox" to="." method="_on_wizar_hitbox_body_exited"]

@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfsq2qd03itc0"]
+
+[ext_resource type="Texture2D" uid="uid://bpelg428117wq" path="res://assets/tilemaps/forest/Terrain_and_Props.png" id="1_78gf4"]
+[ext_resource type="Script" path="res://scripts/Goal.cs" id="1_hljmv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qjam3"]
+size = Vector2(12, 7)
+
+[node name="goal" type="Area2D"]
+script = ExtResource("1_hljmv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(9.125, 6.625)
+scale = Vector2(0.47973, 0.51)
+texture = ExtResource("1_78gf4")
+region_enabled = true
+region_rect = Rect2(167, 455, 37, 25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(9, 4.5)
+shape = SubResource("RectangleShape2D_qjam3")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

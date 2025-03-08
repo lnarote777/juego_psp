@@ -18,6 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.174309, 0.361498, 0.296607, 1)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -78,6 +79,88 @@ theme_override_font_sizes/font_size = 25
 text = "Save
 "
 
+[node name="savePlayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 309.0
+offset_top = 84.0
+offset_right = -282.0
+offset_bottom = -110.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="savePlayer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.029
+anchor_right = 0.971
+anchor_bottom = 1.0
+offset_left = 14.82
+offset_right = 14.8199
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.92523e-06, 0.640949, 0.628403, 1)
+
+[node name="cancel" type="Button" parent="savePlayer"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -45.0
+offset_bottom = 50.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "X"
+
+[node name="TextEdit" type="TextEdit" parent="savePlayer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.651
+anchor_top = 0.121
+anchor_right = 1.394
+anchor_bottom = 0.251
+offset_left = -306.22
+offset_top = 132.066
+offset_right = -304.674
+offset_bottom = 132.046
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+placeholder_text = "Ej: Juan"
+text_direction = 1
+
+[node name="Label" type="Label" parent="savePlayer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.813
+anchor_top = -0.022
+anchor_right = 1.215
+anchor_bottom = 0.048
+offset_left = -348.54
+offset_top = 103.988
+offset_right = -241.7
+offset_bottom = 117.208
+theme_override_font_sizes/font_size = 32
+text = "Introduce tu nombre: "
+
+[node name="ok" type="Button" parent="savePlayer"]
+layout_mode = 2
+offset_left = 176.0
+offset_top = 312.0
+offset_right = 378.0
+offset_bottom = 362.0
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Acept"
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
 [connection signal="pressed" from="HBoxContainer/menu" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="HBoxContainer/exit" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="savePlayer/cancel" to="." method="_on_cancel_pressed"]
+[connection signal="pressed" from="savePlayer/ok" to="." method="_on_ok_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

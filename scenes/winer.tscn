@@ -85,9 +85,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 309.0
-offset_top = 84.0
+offset_top = 101.0
 offset_right = -282.0
-offset_bottom = -110.0
+offset_bottom = -93.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -158,9 +158,19 @@ text = "Acept"
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
+[node name="getPlayers" type="Button" parent="."]
+layout_mode = 0
+offset_left = 979.0
+offset_top = 539.0
+offset_right = 1113.0
+offset_bottom = 579.0
+theme_override_font_sizes/font_size = 23
+text = "Players List"
+
 [connection signal="pressed" from="HBoxContainer/menu" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="HBoxContainer/exit" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="savePlayer/cancel" to="." method="_on_cancel_pressed"]
 [connection signal="pressed" from="savePlayer/ok" to="." method="_on_ok_pressed"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
+[connection signal="pressed" from="getPlayers" to="." method="_on_get_players_pressed"]
